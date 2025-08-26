@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pokedex (React Props)</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- React + ReactDOM + Babel so JSX works in the browser -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // Pokecard: shows ONE pokemon
+      function Pokecard({ id, name, type, base_experience }) {
+        const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+        return (
+          <div className="card">
+            <img src={img} alt={name} />
+            <div className="name">{name}</div>
+            <div className="meta">Type: {type}</div>
+            <div className="meta">EXP: {base_experience}</div>
+          </div>
+        );
+      }
+
+      // Pokedex: gets an ARRAY of pokemon and renders many Pokecards
+      function Pokedex({ pokemon }) {
+        return (
+          <div className="app">
+            <h1>📘 Pokedex</h1>
+            <div className="grid">
+              {pokemon.map(p => (
+                <Pokecard key={p.id} {...p} />
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      // Default list if none is passed in via props
+      Pokedex.defaultProps = {
+        pokemon: [
+          {id: 4, name: 'Charmander', type: 'fire', base_experience: 62},
+          {id: 7, name: 'Squirtle', type: 'water', base_experience: 63},
+          {id: 11, name: 'Metapod', type: 'bug', base_experience: 72},
+          {id: 12, name: 'Butterfree', type: 'flying', base_experience: 178},
+          {id: 25, name: 'Pikachu', type: 'electric', base_experience: 112},
+          {id: 39, name: 'Jigglypuff', type: 'normal', base_experience: 95},
+          {id: 94, name: 'Gengar', type: 'poison', base_experience: 225},
+          {id: 133, name: 'Eevee', type: 'normal', base_experience: 65}
+        ]
+      };
+
+      // App: just renders ONE Pokedex
+      function App() {
+        return <Pokedex />;
+      }
+
+      // Mount to the page
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
